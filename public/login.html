@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Spotify Login</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <style type="text/css">
+      #login, #loggedin {
+        display: none;
+      }
+      .text-overflow {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 500px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="login">
+        <h1>You need first to login on Spotify (NOTE YOU'RE ONLY SUBMITING YOUR CREDENTIALS TO SPOTIFY )</h1>
+        <button id="login-button" class="btn btn-primary">Log in with Spotify</button>
+      </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script>
+      (function() {
+        var stateKey = 'spotify_auth_state';
+        /**
+         * Obtains parameters from the hash of the URL
+         * @return Object
+         */
+        function getHashParams() {
+          var hashParams = {};
+          var e, r = /([^&;=]+)=?([^&;]*)/g,
+              q = window.location.hash.substring(1);
+          while ( e = r.exec(q)) {
+             hashParams[e[1]] = decodeURIComponent(e[2]);
+          }
+          return hashParams;
+        }
+        /**
+         * Generates a random string containing numbers and letters
+         * @param  {number} length The length of the string
+         * @return {string} The generated string
+         */
+        function generateRandomString(length) {
+          var text = '';
+          var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+          for (var i = 0; i < length; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+          }
+          return text;
+        };
+
+        var params = getHashParams();
+        var access_token = params.access_token,
+            state = params.state,
+            storedState = localStorage.getItem(stateKey);
+        if (access_token && (state == null || state !== storedState)) {
+          alert('There was an error during the authentication');
+        } else {
+          localStorage.removeItem(stateKey);
+          if (access_token) {
+			var url='main';
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me',
+                headers: {
+                  'Authorization': 'Bearer ' + access_token
+                },
+                success: function(response) {
+                  userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+                  $('#login').hide();
+                  $('#loggedin').show();
+                }
+            });
+          } else {
+              $('#login').show();
+              $('#loggedin').hide();
+          }
+          document.getElementById('login-button').addEventListener('click', function() {
+            var client_id = 'c3665e043c104a7e844362618fcb9090'; // Your client id
+            var redirect_uri = 'http://'+window.location.host+'/spotify-session-app.html'; // Your redirect uri
+            var state = generateRandomString(16);
+            localStorage.setItem(stateKey, state);
+            var scope = 'user-read-private user-read-email';
+            var url = 'https://accounts.spotify.com/authorize';
+            url += '?response_type=token';
+            url += '&client_id=' + encodeURIComponent(client_id);
+            url += '&scope=' + encodeURIComponent(scope);
+            url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
+            url += '&state=' + encodeURIComponent(state);
+            window.location = url;
+          }, false);
+        }
+      })();
+    </script>
+</html>
