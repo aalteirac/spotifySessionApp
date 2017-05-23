@@ -3,7 +3,7 @@ Qlik Session App sample, based on Spotify information. App is created dynamicall
 
 To see data you'll need to have at least one public playlist on your Spotify account. Analyse only the 20 first playlists because of Spotify API rate limit, just a sample :-)
 
-Requires a Qlik Sense Enterprise Server or Qlik Sense Desktop >=3.2, virtual proxy minimal settings provided in the code (config.js)
+Requires a Qlik Sense Enterprise Server or Qlik Sense Desktop >=3.2 SR3, virtual proxy minimal settings provided in the code (config.js)
 
 In config.js you'll find information to run it, try first with Qlik Sense Desktop, will help you to understand the flow and will be easier to setup sense server next if needed.
 
