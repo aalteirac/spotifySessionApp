@@ -1,5 +1,7 @@
 # spotifySessionApp
-Qlik Session App sample, based on Spotify information
+Qlik Session App sample, based on Spotify information. App is created dynamically and only in RAM.
+
+To see data you'll need to have at least one public playlist on your Spotify account. Analyse only the 20 first playlists because of Spotify API rate limit, just a sample :-)
 
 Requires a Qlik Sense Enterprise Server or Qlik Sense Desktop >=3.2, virtual proxy minimal settings provided in the code (config.js)
 
