@@ -20,7 +20,7 @@ var config = extend(true, {
 
     //CHANGE ALSO THE IP IN THE FRONT-END IN spotify-session-app.js (line 31)
 
-
+    emptyAppID:"82df6f83-a835-4587-ab8f-76c20155dbfc",
     hostname:'localhost',
     cookieName: 'X-sess',
     directory:'CUSTOM',
