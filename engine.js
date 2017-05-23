@@ -6,14 +6,26 @@ const configuration = require('./config');
 const fs=require('fs');
 
 function getConfig(cook,app){
+    var session;
+    if(configuration.runDesktop){
+        session= {
+            identity:"sessionapp",
+                host: "localhost",
+                prefix:"",
+                port:4848,
+                unsecure:true
+        }
+    }else{
+        session= {
+            identity:"sessionapp",
+                host: configuration.hostname,
+                prefix:configuration.prefix,
+                unsecure:true
+        }
+    }
     return {
         schema: qixSchema,
-        session: {
-            identity:"sessionapp",
-            host: configuration.hostname,
-			prefix:configuration.prefix,
-            unsecure:true
-        },
+        session: session,
         createSocket: (url) => {
             return new WebSocket(url, {
                 headers: {
