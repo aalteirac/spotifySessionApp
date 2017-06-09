@@ -1,0 +1,57 @@
+@font-face {
+	font-family: 'Quicksand';
+	src: url('../../resources/fonts/Quicksand-Regular.otf');
+}
+
+html, body {
+	height: 100%;
+	background: #595959;
+	margin: 0;
+}
+
+.container {
+	font-family: 'Quicksand';
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+#login {
+	margin: 30px;
+	display: flex;
+	flex-direction: column;
+}
+
+.logo {
+	width: 100%;
+	max-width: 400px;
+	margin-bottom: 30px;
+	align-self: center;
+}
+
+#login-button {
+	font-family: 'Quicksand';
+	background: #76b748;
+	border: 1px solid #b3b3b3;
+	border-radius: 4px;
+	color: white;
+	width: 100%;
+	height: 40px;
+	font-size: 18px;
+	max-width: 400px;
+	align-self: center;
+	flex: 0 0 auto;
+}
+
+.by-wtk {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 15px;
+	color: #a6a6a6;
+	font-size: 15px;
+}
+
+
