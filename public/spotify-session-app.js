@@ -7,9 +7,21 @@ function getHashParams() {
     }
     return hashParams;
 }
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
 //Turn it to false if running all local with Qlik Sense Desktop
-runDesktop = false;
-$.post('main', {auth: getHashParams().access_token}, function (data) {
+runDesktop = true;
+$.post('main', {auth: getHashParams().access_token, code: getUrlVars().code}, function (data) {
     if (data.redirect) {
         window.location = "/";
         return;

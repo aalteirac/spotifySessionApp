@@ -18,8 +18,11 @@ router.get('/session/*', function (req, res, next) {
 	})
 })
 router.post('/', function (req, res, next) {
-    if (req.body.template && req.session.token) {
-			spot.getBasic(req.session.token).then((data)=>{
+    if (req.body.code) {
+		console.log("1");
+		req.session.code=req.body.code;
+			console.log(req.session.code);
+			spot.getBasic(req.session.token, req.session.code).then((data)=>{
 				var uid = req.body.userid;
 				var script = data.script;
 				if(req.session.sessionID){
@@ -43,7 +46,10 @@ router.post('/', function (req, res, next) {
 			}).catch((e)=>{res.status(500).send(err)});
     }
 	else if (req.body.auth) {
+		console.log("2");
+		console.log(req.body.code);
 		req.session.token=req.body.auth;
+		req.session.code=req.body.code;
 		spot.getUser(req.session.token).then((data)=>{
 			console.log("Logged:",data);
 			req.session.sessionID=generateID();

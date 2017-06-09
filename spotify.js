@@ -7,7 +7,8 @@ const conf = require('./config');
 
 var credentials = {
     clientId: conf.clientId,
-    clientSecret: conf.clientSecret
+    clientSecret: conf.clientSecret,
+	redirectUri : 'http://localhost:3010/spotify-session-app.html'
 };
 
 function getParameterByName(name, url) {
@@ -57,11 +58,27 @@ function getTracks(spotifyApi,userId,playlistId,offset,res){
         })
 }
 
-function getBasic(tk){
+function getBasic(tk, code){
 	return new Promise( function ( resolve, reject ) {
-		var spotifyApi = new SpotifyWebApi( credentials );
 		var userID,playlistName;
-		spotifyApi.setAccessToken( tk);
+		console.log(code);
+		var spotifyApi = new SpotifyWebApi( credentials );
+		console.log("ok so far");
+		spotifyApi.authorizationCodeGrant(code)
+			.then(function(data) {
+				console.log(data.body['access_token']);
+				spotifyApi.setAccessToken(data.body['access_token']);
+				//spotifyApi.setAccessToken( tk);
+				spotifyApi.getFollowedArtists()
+					.then( function ( data ) {
+						console.log( 'User artists', data );
+						return data;
+					}, function ( err ) {
+						console.error( err );
+						return err;
+					} );
+			});
+
 		spotifyApi.getMe().then(function (data) {
 			userID=data.body.id;
 			var userName=data.body.display_name==null?data.body.id:data.body.display_name;
@@ -78,84 +95,84 @@ function getBasic(tk){
 					var allPtracks=[]
 					Promise.all(allP).then((allData)=>{
 						var artistsList = [];
-						allData.forEach( function ( play ) {
-									
-							if(play.body.tracks.next){
-								var curP=getTracks(spotifyApi,play.body.owner.id,play.body.id,getParameterByName('offset',play.body.tracks.next),play.body.tracks.items);
-								allPtracks.push(curP);
-								curP.then((d)=>{
-									//console.log(play.body.name,d.length);
-									artistsList.push.apply(artistsList,
-										d.map( function ( el ) {
-											allPlaylist.push({playName:play.body?play.body.name:'-',trackName:el.track?el.track.name:'-'})
-											if(el.track){
-												tracks.push({trackName:el.track.name,artistName:el.track.artists.length>0? el.track.artists[0].name:'-',url:el.track.external_urls.spotify})
-												return el.track.artists[0].id;
-											}
-											} )
-									)
-								})
-							}
-							else{
+					allData.forEach( function ( play ) {
+
+						if(play.body.tracks.next){
+							var curP=getTracks(spotifyApi,play.body.owner.id,play.body.id,getParameterByName('offset',play.body.tracks.next),play.body.tracks.items);
+							allPtracks.push(curP);
+							curP.then((d)=>{
+								//console.log(play.body.name,d.length);
 								artistsList.push.apply(artistsList,
-									play.body.tracks.items.map( function ( el ) {
-										allPlaylist.push({playName:play.body?play.body.name:'-',trackName:el.track?el.track.name:'-'})
-										if(el.track){
-											tracks.push({trackName:el.track.name,artistName:el.track.artists.length>0? el.track.artists[0].name:'-',url:el.track.external_urls.spotify})
-											return el.track.artists[0].id;
-										}
-										} )
-								)
-							}
+								d.map( function ( el ) {
+									allPlaylist.push({playName:play.body?play.body.name:'-',trackName:el.track?el.track.name:'-'})
+									if(el.track){
+										tracks.push({trackName:el.track.name,artistName:el.track.artists.length>0? el.track.artists[0].name:'-',url:el.track.external_urls.spotify})
+										return el.track.artists[0].id;
+									}
+								} )
+							)
 						})
-						Promise.all(allPtracks).then(()=>{
-							artistsList=artistsList.filter( function ( elem, index, self ) {
-									return index === self.findIndex( function ( x ) { return x === elem } );
-							} );
-							artistsList=artistsList.filter( function ( elem ) {
-									return typeof(elem)!='undefined';
-							} );
-							//console.log("#tracks",tracks.length);
-							getArtistsData( spotifyApi, artistsList ).then( function ( artists ) {
-								var halyard = new Halyard();
-								halyard.addTable( allPlaylist, "Playlist" );
-								halyard.addTable( tracks, "Tracks" );
-								halyard.addTable( artists, "Artist" );
-								resolve( {name:userName,script:halyard.getScript(),user:userID} );
-							},(e)=>{
-								reject ({error:"Error getting artist data",stack:e});
-							});
-						})
+						}
+						else{
+							artistsList.push.apply(artistsList,
+								play.body.tracks.items.map( function ( el ) {
+									allPlaylist.push({playName:play.body?play.body.name:'-',trackName:el.track?el.track.name:'-'})
+									if(el.track){
+										tracks.push({trackName:el.track.name,artistName:el.track.artists.length>0? el.track.artists[0].name:'-',url:el.track.external_urls.spotify})
+										return el.track.artists[0].id;
+									}
+								} )
+							)
+						}
+					})
+					Promise.all(allPtracks).then(()=>{
+						artistsList=artistsList.filter( function ( elem, index, self ) {
+						return index === self.findIndex( function ( x ) { return x === elem } );
+					} );
+					artistsList=artistsList.filter( function ( elem ) {
+						return typeof(elem)!='undefined';
+					} );
+					//console.log("#tracks",tracks.length);
+					getArtistsData( spotifyApi, artistsList ).then( function ( artists ) {
+						var halyard = new Halyard();
+						halyard.addTable( allPlaylist, "Playlist" );
+						halyard.addTable( tracks, "Tracks" );
+						halyard.addTable( artists, "Artist" );
+						resolve( {name:userName,script:halyard.getScript(),user:userID} );
 					},(e)=>{
-					reject ({error:"Error getting the playlists"});
+						reject ({error:"Error getting artist data",stack:e});
+				});
+				})
+				},(e)=>{
+						reject ({error:"Error getting the playlists"});
 					})
 					//simplified version, only the first public playlist
 					/* playlistName=data.body.items[0].name;
-					spotifyApi.getPlaylist( data.body.items[0].owner.id, data.body.items[0].id ).then((data)=>{
-						var artistsList = data.body.tracks.items.map( function ( el ) {
-							return el.track.artists[0].id;
-						} ).filter( function ( elem, index, self ) {
-							return index === self.findIndex( function ( x ) { return x === elem } );
-						} );
-						getArtistsData( spotifyApi, artistsList ).then( function ( artists ) {
-							getAllArtistAlbums( spotifyApi, artistsList ).then( function ( albums ) {
-								var halyard = new Halyard();
-								halyard.addTable( albums, "Album" );
-								halyard.addTable( artists, "Artist" );
-								resolve( {name:playlistName,script:halyard.getScript(),user:userID} );
-							} );
-						} );
-					},(e)=>{
-					reject ({error:"Error getting the first playlist"});
-					}) */
-					
-				}	
+					 spotifyApi.getPlaylist( data.body.items[0].owner.id, data.body.items[0].id ).then((data)=>{
+					 var artistsList = data.body.tracks.items.map( function ( el ) {
+					 return el.track.artists[0].id;
+					 } ).filter( function ( elem, index, self ) {
+					 return index === self.findIndex( function ( x ) { return x === elem } );
+					 } );
+					 getArtistsData( spotifyApi, artistsList ).then( function ( artists ) {
+					 getAllArtistAlbums( spotifyApi, artistsList ).then( function ( albums ) {
+					 var halyard = new Halyard();
+					 halyard.addTable( albums, "Album" );
+					 halyard.addTable( artists, "Artist" );
+					 resolve( {name:playlistName,script:halyard.getScript(),user:userID} );
+					 } );
+					 } );
+					 },(e)=>{
+					 reject ({error:"Error getting the first playlist"});
+					 }) */
+
+				}
 			},(e)=>{
 				reject ({error:"Error getting user playlist"});
-			});
+		});
 		},(e)=>{
 			reject ({error:"Error getting user information"});
-		})
+	})
 	});
 }
 
@@ -174,7 +191,7 @@ function getArtistsData ( api, list ) {
 			temparray = list.slice(i,i+chunk);
 			allP.push(api.getArtists(temparray))
 		}
-		
+
 		Promise.all(allP.map(reflect)).then((data)=>{
 			var success = data.filter(x => x.status === "resolved");
 			var failed = data.filter(x => x.status === "rejected");
@@ -190,7 +207,7 @@ function getArtistsData ( api, list ) {
 					popularity: el.popularity
 				}
 			} );
-			
+
 			resolve( allArtists );
 		},(e)=>{
 			reject (e);

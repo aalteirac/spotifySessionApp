@@ -6,7 +6,7 @@ var extend = require('extend')
 var certPath = "C:\\ProgramData\\Qlik\\Sense\\Repository\\Exported Certificates\\.Local Certificates";
 var config = extend(true, {
     //IMPORTANT if testing on desktop, turn it to true, this will set the port to 4848 and will ignore the authentication step.
-    runDesktop:false,
+    runDesktop:true,
     //SPOTIFY API KEYS, GO TO THE DEV WEB SITE TO GET THEM
     clientId: 'fb7a34fc55804a89981e98c96e6101e5',
     clientSecret: 'b8da5590ba5e4200b0cdeb4da59e2e9a',
