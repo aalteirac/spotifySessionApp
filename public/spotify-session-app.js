@@ -8,7 +8,7 @@ function getHashParams() {
     return hashParams;
 }
 //Turn it to false if running all local with Qlik Sense Desktop
-runDesktop = true;
+runDesktop = false;
 $.post('main', {auth: getHashParams().access_token}, function (data) {
     if (data.redirect) {
         window.location = "/";
@@ -28,7 +28,7 @@ $.post('main', {auth: getHashParams().access_token}, function (data) {
     }else{
         config = {
             //Change to Qlik Server IP or hostname
-            host: 'xxx.xxx.xxx.xxx',
+            host: '10.76.224.67',
             prefix: '/ano/',
             port: 80,
             isSecure: false
