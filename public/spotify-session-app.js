@@ -42,9 +42,28 @@ $.post('main', {auth: getHashParams().access_token}, function (data) {
 
 	$( ".send-score" ).click( function () {
 		$( ".toaster" ).addClass( 'show' );
-		setTimeout( function () {
-			$( ".toaster" ).removeClass( 'show' );
-		}, 4000 );
+
+		$.ajax( {
+			type: "POST",
+			url: "http://localhost:7979/users/add",
+			data: JSON.stringify( {
+				"name": "gaga",
+				"xxx": "gugu"
+			} ),
+			contentType: "application/json"
+		} ).done( function ( data ) {
+			console.log( "success", data );
+			$( ".toaster" ).html( data.responseJSON.message );
+		} ).fail( function ( err ) {
+			console.log( "error", err );
+			$( ".toaster" ).html( err.responseJSON.message );
+		} ).complete( function () {
+			setTimeout( function () {
+				$( ".toaster" ).removeClass( 'show' );
+			}, 4000 );
+		} );
+
+
 	} );
 
     var config;
