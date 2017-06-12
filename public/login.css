@@ -46,6 +46,9 @@ html, body {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+
+	-webkit-appearance: button-bevel;
+  -webkit-animation: 2s ease 0s normal forwards 1 mymove1;
 }
 
 #login-button:active {
@@ -64,3 +67,10 @@ html, body {
 }
 
 
+@keyframes mymove1 {
+  0% { opacity:0;
+	width: 0%}
+  50% { opacity:0; width: 0%; }
+  100% { opacity:1;
+	width:100% }
+}
