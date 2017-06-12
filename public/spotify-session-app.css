@@ -16,7 +16,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	background-image: url("images/background-pattern.png");
-	background-size: auto 135%;
+	background-size: auto 716px;
 	overflow-y: auto;
 	overflow-x: hidden;
 	height: calc(100% - 46px);
@@ -39,6 +39,15 @@ body {
 .user-wrapper {
 	display: flex;
 	align-items: center;
+	width: calc(100% - 53px);
+}
+
+#user-name {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	margin-right: 15px;
 }
 
 .profile-img {
@@ -50,12 +59,17 @@ body {
 
 .lui-icon--log-out {
 	font-size: 18px;
+	margin-left: 17px;
 }
 
 .logo {
 	width: calc(100% - 20px);
 	margin: 10px;
 	max-width: 400px;
+}
+
+.icon-wrap {
+	display: flex;
 }
 
 #main-area {
@@ -207,7 +221,8 @@ body {
 
 .toaster {
 	position: absolute;
-	bottom: -40px;
+	bottom: 0;
+	display: none;
 	width: calc(100% - 10px);
 	height: 35px;
 	color: white;
@@ -218,11 +233,11 @@ body {
 	margin: 5px 0;
 	border-radius: 5px;
 	font-size: 16px;
-	transition: bottom 0.5s;
+	max-width: 360px;
 }
 
 .toaster.show {
-	bottom: 0;
+	display: inline;
 }
 
 /*.spinner {*/
