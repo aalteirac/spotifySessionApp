@@ -16,6 +16,15 @@ $.post('main', {auth: getHashParams().access_token}, function (data) {
     }
     var sessionApp;
 
+	$( ".bar" ).css( "height", "calc(97% - 2px)" );
+
+	$( ".send-score" ).click( function () {
+		$( ".toaster" ).addClass( 'show' );
+		setTimeout( function () {
+			$( ".toaster" ).removeClass( 'show' );
+		}, 4000 );
+	} );
+
     var config;
     if (runDesktop) {
         config = {
