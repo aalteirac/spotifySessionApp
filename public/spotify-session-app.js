@@ -10,6 +10,8 @@ function getHashParams() {
 //Turn it to false if running all local with Qlik Sense Desktop
 runDesktop = false;
 $.post('main', {auth: getHashParams().access_token}, function (data) {
+   
+
     if (data.redirect) {
         window.location = "/";
         return;
@@ -48,6 +50,28 @@ $.post('main', {auth: getHashParams().access_token}, function (data) {
         baseUrl: (config.isSecure ? "https://" : "http://" ) + config.host + (config.port ? ":" + config.port : "" ) + config.prefix + "resources"
     });
 
+     
+        
+
+     $(".dis").click(()=> {
+
+            var allcookies = document.cookie;
+    
+            
+             localStorage.clear();
+             localStorage.removeItem("connect.sid");
+
+             document.cookie.split(";").forEach(function(c){
+                if( c.name == 'connect.sid')
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+             });
+            
+              
+            
+
+             window.location = "/";
+             return;
+        })
 
     require(["js/qlik"], function (qlik) {
 
@@ -204,9 +228,12 @@ $.post('main', {auth: getHashParams().access_token}, function (data) {
                     break;
             }
         });
-        $('.dis').click(()=> {
+        $(".dis").click(()=> {
+            
             var app = qlik.currApp();
             if (app) app.global.session.close();
+             window.location = "/";
+             return;
         })
 
     });
