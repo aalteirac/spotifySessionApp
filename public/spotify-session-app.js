@@ -42,11 +42,18 @@ $.post('main', {auth: getHashParams().access_token}, function (data) {
 		$( ".mainstream-label" ).text("Super mainstream");
 	}
 
+	$('.toaster').hide();
 	$( ".send-score" ).click( function () {
 		$( ".toaster" ).addClass( 'show' );
+		$('.toaster').fadeIn(1000);
 		setTimeout( function () {
-			$( ".toaster" ).removeClass( 'show' );
+			$('.toaster').fadeOut(1000);
+			setTimeout( function () { $( ".toaster" ).removeClass( 'show' ); }, 1000 );
 		}, 4000 );
+	} );
+
+	$( ".high-score" ).click( function () {
+		// open highscore page
 	} );
 
     var config;
