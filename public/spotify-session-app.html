@@ -17,109 +17,104 @@
 	<script src="./spin.min.js"></script>
 	<script src="./require.js"></script>
 	<link rel="stylesheet" href="qlik-styles.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
 	<link rel="stylesheet" href="spotify-session-app.css">
 </head>
 <body role="document">
-
 <div class="header">
-	<img src="images/qlik.png" class="logo qlik-logo">
-	<img src="images/heart.png" class="logo heart-logo">
-	<img src="images/spotify.png" class="logo spotify-logo">
+	<div class="user-wrapper">
+		<img src="images/album.png" class="profile-img">
+		<span id="user-name">Ann-Louise Andersson</span>
+	</div>
+	<span class="lui-icon lui-icon--log-out" aria-hidden="true"></span>
 </div>
-<div id="main-page" class="content-wrapper">
-	<div class="menu">
-		<!--TODO: Put the class 'active' on the active item-->
-		<div class="list-item active">PlayList</div>
-		<div class="list-item dis">Disconnect</div>
-	</div>
-	<div class="content">
-		<div class="navbar navbar-inverse" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<span class="navbar-brand fixed" data-toggle="tooltip" data-placement="right" id="title"></span>
+<div class="content-wrapper">
 
+	<img src="images/logoreveal_cord.gif" class="logo">
+
+	<div id="main-area">
+		<div class="data-wrap">
+			<span class="title">Your Mainstream Value</span>
+			<div class="flex-row">
+				<div class="flex-column">
+					<!--<img src="images/crocodile-icon.png" class="mainstream-icon">-->
+					<img class="mainstream-icon">
+					<span class="mainstream-label"></span>
+					<span class="mainstream-value"></span>
 				</div>
-				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav pull-right">
-						<li>
-							<a class="qcmd" data-qcmd="clearAll">ClearAll</a>
-						</li>
-						<li>
-							<a class="qcmd" data-qcmd="back">Back</a>
-						</li>
-						<li>
-							<a class="qcmd" data-qcmd="forward">Forward</a>
-						</li>
-					</ul>
-				</div>
-				<!--/.nav-collapse -->
-			</div>
-		</div>
-		<div class="spin container">
-			<div class="column-1">
-				<div class="col-md-12" id="spin" style="width: 100%; height: 100%;"></div>
-			</div>
-		</div>
-		<div class="container loaded">
-			<div class="column-1">
-				<div class="row">
-					<div class="row">
-						<div class="row col-md-6">
-							<div class="col-xs-1 col-md-12" id="QV03"></div>
-							<div class="col-xs-1 col-md-12" id="QV03b"></div>
-						</div>
-						<div class="col-xs-1 col-md-4" id="QV01"></div>
-						<div class="col-xs-1 col-md-4" id="QV02"></div>
-					</div>
-					<div class="row">
-						<div class="col-md-12" id="QV04"></div>
-					</div>
-					<div class="row">
-						<div class="col-md-12" id="QV05"></div>
-					</div>
+				<div class="mainstream-bar">
+					<div class="bar"></div>
 				</div>
 			</div>
-			<div class="column-2">
-				<div class="col-md-12" id="QV06"></div>
+			<button class="send-score">Share your score</button>
+		</div>
+		<div class="data-wrap">
+			<span class="title">Your Favorite Albums</span>
+			<div class="album-wrap">
+				<img src="images/album.png" class="album-img">
+				<img src="images/album.png" class="album-img">
+				<img src="images/album.png" class="album-img">
+				<img src="images/album.png" class="album-img">
 			</div>
 		</div>
+		<div class="data-wrap">
+			<span class="title">Your Favorite Songs</span>
+			<div class="song-wrap">
+				<span class="number" style="margin-left: 7px;">1.</span>
+				<span class="song">Friday Night - Vigiland</span>
+			</div>
+			<div class="song-wrap">
+				<span class="number">2.</span>
+				<span class="song">Friday Night - Vigiland</span>
+			</div>
+			<div class="song-wrap">
+				<span class="number">3.</span>
+				<span class="song">Friday Night - Vigiland</span>
+			</div>
+			<div class="song-wrap">
+				<span class="number">4.</span>
+				<span class="song">Friday Night - Vigiland</span>
+			</div>
+			<div class="song-wrap">
+				<span class="number">5.</span>
+				<span class="song">Friday Night - Vigiland</span>
+			</div>
+		</div>
+
+		<!--<div class="spin container">-->
+		<!--<div class="column-1">-->
+		<!--<div class="col-md-12" id="spin" style="width: 100%; height: 100%;"></div>-->
+		<!--</div>-->
+		<!--</div>-->
+
 	</div>
+	<div class="toaster">Your score is sent to the high score</div>
 </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="spotify-session-app.js"></script>
 <script>
-var opts = {
-  lines: 13 // The number of lines to draw
-, length: 56 // The length of each line
-, width: 16 // The line thickness
-, radius: 42 // The radius of the inner circle
-, scale: 2.0 // Scales overall size of the spinner
-, corners: 1 // Corner roundness (0..1)
-, color: '#000' // #rgb or #rrggbb or array of colors
-, opacity: 0.25 // Opacity of the lines
-, rotate: 11 // The rotation offset
-, direction: 1 // 1: clockwise, -1: counterclockwise
-, speed: 1 // Rounds per second
-, trail: 60 // Afterglow percentage
-, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-, zIndex: 2e9 // The z-index (defaults to 2000000000)
-, left:'50%'
-, className: 'spinner' // The CSS class to assign to the spinner
-, shadow: true // Whether to render a shadow
-, hwaccel: true // Whether to use hardware acceleration
-, position: 'absolute' // Element positioning
-}
-var target = document.getElementById('spin')
-var spinner = new Spinner(opts).spin(target);
+	var opts = {
+		lines: 13 // The number of lines to draw
+		, length: 56 // The length of each line
+		, width: 16 // The line thickness
+		, radius: 42 // The radius of the inner circle
+		, scale: 2.0 // Scales overall size of the spinner
+		, corners: 1 // Corner roundness (0..1)
+		, color: '#000' // #rgb or #rrggbb or array of colors
+		, opacity: 0.25 // Opacity of the lines
+		, rotate: 11 // The rotation offset
+		, direction: 1 // 1: clockwise, -1: counterclockwise
+		, speed: 1 // Rounds per second
+		, trail: 60 // Afterglow percentage
+		, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+		, zIndex: 2e9 // The z-index (defaults to 2000000000)
+		, left: '50%'
+		, className: 'spinner' // The CSS class to assign to the spinner
+		, shadow: true // Whether to render a shadow
+		, hwaccel: true // Whether to use hardware acceleration
+		, position: 'absolute' // Element positioning
+	};
+	var target = document.getElementById( 'spin' );
+	var spinner = new Spinner( opts ).spin( target );
 </script>
 </html>
-

@@ -27,6 +27,37 @@ $.post('main', {auth: getHashParams().access_token, code: getUrlVars().code}, fu
         return;
     }
     var sessionApp;
+	var mainstreamValue = 55;
+
+	$( ".mainstream-value" ).text(mainstreamValue);
+	$( ".bar" ).css( "height", "calc(" + mainstreamValue + "% - 2px)" );
+
+	if ( mainstreamValue < 17 ) {
+		$( ".mainstream-icon" ).attr("src", "images/tape-icon.png");
+		$( ".mainstream-label" ).text("Not at all mainstream");
+	} else if ( mainstreamValue < 34 ) {
+		$( ".mainstream-icon" ).attr("src", "images/cow-icon.png");
+		$( ".mainstream-label" ).text("Not really mainstream");
+	} else if ( mainstreamValue < 51 ) {
+		$( ".mainstream-icon" ).attr("src", "images/rap-icon.png");
+		$( ".mainstream-label" ).text("Somewhat mainstream");
+	} else if ( mainstreamValue < 68 ) {
+		$( ".mainstream-icon" ).attr("src", "images/headset-icon.png");
+		$( ".mainstream-label" ).text("Just right mainstream");
+	} else if ( mainstreamValue < 85 ) {
+		$( ".mainstream-icon" ).attr("src", "images/fire-icon.png");
+		$( ".mainstream-label" ).text("Very mainstream");
+	} else if ( mainstreamValue >= 85 ) {
+		$( ".mainstream-icon" ).attr("src", "images/star.gif-c200");
+		$( ".mainstream-label" ).text("Super mainstream");
+	}
+
+	$( ".send-score" ).click( function () {
+		$( ".toaster" ).addClass( 'show' );
+		setTimeout( function () {
+			$( ".toaster" ).removeClass( 'show' );
+		}, 4000 );
+	} );
 
     var config;
     if (runDesktop) {
