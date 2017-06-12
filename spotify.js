@@ -9,6 +9,7 @@ var credentials = {
 	clientSecret: conf.clientSecret,
 	redirectUri: 'http://localhost:3010/spotify-session-app.html'
 };
+var spotifyApi;
 
 function getParameterByName ( name, url ) {
 	if ( !url ) {
@@ -26,15 +27,17 @@ function getParameterByName ( name, url ) {
 	return decodeURIComponent( results[2].replace( /\+/g, " " ) );
 }
 
-function getUser ( tk ) {
+function getUser ( code ) {
 	return new Promise( function ( resolve, reject ) {
-		var spotifyApi = new SpotifyWebApi( credentials );
-		spotifyApi.setAccessToken( tk );
-		spotifyApi.getMe().then( function ( data ) {
-			resolve( userID = data.body.id );
-		}, ( e ) => {
-			reject( e );
-		} )
+		spotifyApi = new SpotifyWebApi( credentials );
+		spotifyApi.authorizationCodeGrant( code ).then( function ( data ) {
+			spotifyApi.setAccessToken( data.body['access_token'] );
+			spotifyApi.getMe().then( function ( data ) {
+				resolve( userID = data.body.id );
+			}, ( e ) => {
+				reject( e );
+			} )
+		} );
 	} )
 }
 
@@ -63,35 +66,26 @@ function getTracks ( spotifyApi, userId, playlistId, offset, res ) {
 
 function getBasic ( tk, code ) {
 	return new Promise( function ( resolve, reject ) {
-		var userID, playlistName;
-		console.log( code );
-		var spotifyApi = new SpotifyWebApi( credentials );
-		console.log( "ok so far" );
-		spotifyApi.authorizationCodeGrant( code )
+		spotifyApi.getFollowedArtists()
 			.then( function ( data ) {
-				console.log( data.body['access_token'] );
-				spotifyApi.setAccessToken( data.body['access_token'] );
-				//spotifyApi.setAccessToken( tk);
-				spotifyApi.getFollowedArtists()
-					.then( function ( data ) {
-						let artists = data.body.artists.items.map( function ( el ) {
-							return {
-								artistId: el.id,
-								artistName: el.name,
-								genres: el.genres[0], //todo: consider to take more than one genre
-								image: el.images[0], //todo: consider to take more than one image
-								popularity: el.popularity,
-								followers: el.followers.total
-							}
-						} );
-						let halyard = new Halyard();
-						halyard.addTable( artists, "Artist" );
-						resolve( {name: "test", artists: artists, script: halyard.getScript(), user: "user"} );
-					}, function ( err ) {
-						console.error( err );
-						reject( err );
-					} );
+				let artists = data.body.artists.items.map( function ( el ) {
+					return {
+						artistId: el.id,
+						artistName: el.name,
+						genres: el.genres[0], //todo: consider to take more than one genre
+						image: el.images[0], //todo: consider to take more than one image
+						popularity: el.popularity,
+						followers: el.followers.total
+					}
+				} );
+				let halyard = new Halyard();
+				halyard.addTable( artists, "Artist" );
+				resolve( {name: "test", artists: artists, script: halyard.getScript(), user: "user"} );
+			}, function ( err ) {
+				console.error( err );
+				reject( err );
 			} );
+		// } );
 
 		// spotifyApi.getMe().then( function ( data ) {
 		// 	userID = data.body.id;

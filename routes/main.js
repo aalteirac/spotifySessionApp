@@ -18,7 +18,7 @@ router.get('/session/*', function (req, res, next) {
 	})
 })
 router.post('/', function (req, res, next) {
-    if (req.body.code) {
+    if (req.body.code && !req.body.auth) {
 		console.log("1");
 		req.session.code=req.body.code;
 			console.log(req.session.code);
@@ -45,18 +45,14 @@ router.post('/', function (req, res, next) {
 				res.status(200).send({error:"Error in Spotify communication",stack:e.error})
 			}).catch((e)=>{res.status(500).send(err)});
     }
-	else if (req.body.auth) {
-		console.log("2");
-		console.log(req.body.code);
-		req.session.token=req.body.auth;
-		req.session.code=req.body.code;
-		spot.getUser(req.session.token).then((data)=>{
+	else if (req.body.auth && req.body.code) {
+		spot.getUser(req.body.code).then((data)=>{
 			console.log("Logged:",data);
 			req.session.sessionID=generateID();
 			mcache.put(req.session.sessionID,data);
 			req.session.userId=data;
 			res.cookie(config.cookieName, req.session.sessionID, {expires: 0, httpOnly: true});
-			res.status(200).send(req.session.token);
+			res.status(200).send(req.body.code);
 		},(e)=>{
 			//res.redirect(307,'/login.html');
 			res.status(200).send({redirect:'/',error:"Error getting user info",stack:e})

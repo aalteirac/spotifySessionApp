@@ -21,7 +21,7 @@ function getUrlVars()
 }
 //Turn it to false if running all local with Qlik Sense Desktop
 runDesktop = true;
-$.post('main', {auth: getHashParams().access_token, code: getUrlVars().code}, function (data) {
+$.post('main', { auth: true, code: getUrlVars().code }, function (data) {
     if (data.redirect) {
         window.location = "/";
         return;
@@ -221,7 +221,7 @@ $.post('main', {auth: getHashParams().access_token, code: getUrlVars().code}, fu
         //global.getAuthenticatedUser(function(reply){
         //	global.session.close()
         //var user=reply.qReturn.split(';')[1].split('=')[1];
-        post({template: "new"});
+        post({code: getUrlVars().code});
         //});
         $("[data-qcmd]").on('click', function () {
             var $element = $(this);
