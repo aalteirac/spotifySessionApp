@@ -60,7 +60,11 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 	} );
 
 	$( ".high-score" ).click( function () {
-		// open highscore page
+		window.open('highscore/highscore.html');
+	} );
+
+	$( ".lui-icon--log-out" ).click( function () {
+		window.open('login.html');
 	} );
 
 	var config;
@@ -117,6 +121,16 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 				$( ".content" ).css( 'overflow', 'hidden' );
 				$( ".loaded" ).css( 'display', 'flex' );
 
+				$( ".lui-icon--clear-selections" ).click( function () {
+					sessionApp.clearAll();
+				} );
+				$( ".lui-icon--selections-back" ).click( function () {
+					sessionApp.back();
+				} );
+				$( ".lui-icon--selections-forward" ).click( function () {
+					sessionApp.forward();
+				} );
+
 				//Update KPI
 				sessionApp.visualization.create( "table", [{
 					"qDef": {
@@ -132,6 +146,7 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 					}
 				}], {} ).then( function ( reply ) {
 					updateKpi( reply.model.layout.qHyperCube.qDataPages[0].qMatrix[0][0].qNum );
+					$(".spin").remove();
 				} );
 
 				sessionApp.visualization.create('linechart',
@@ -151,8 +166,6 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 				).then( function ( table ) {
 					table.show( "QV02" );
 				} );
-
-				sessionApp.clearAll();
 
 				// allOb.push(sessionApp.visualization.create("table", [{
 				//     "qDef": {
