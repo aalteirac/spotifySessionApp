@@ -32,8 +32,8 @@ function getUser ( code ) {
 		spotifyApi = new SpotifyWebApi( credentials );
 		spotifyApi.authorizationCodeGrant( code ).then( function ( data ) {
 			spotifyApi.setAccessToken( data.body['access_token'] );
-			spotifyApi.getMe().then( function ( data ) {
-				resolve( userID = data.body.id );
+			spotifyApi.getMe().then( function ( reply ) {
+				resolve( reply.body );
 			}, ( e ) => {
 				reject( e );
 			} )

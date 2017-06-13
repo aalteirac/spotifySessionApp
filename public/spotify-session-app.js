@@ -1,12 +1,3 @@
-function getHashParams () {
-	var hashParams = {};
-	var e, r = /([^&;=]+)=?([^&;]*)/g,
-		q = window.location.hash.substring( 1 );
-	while ( e = r.exec( q ) ) {
-		hashParams[e[1]] = decodeURIComponent( e[2] );
-	}
-	return hashParams;
-}
 function getUrlVars () {
 	var vars = [], hash;
 	var hashes = window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ).split( '&' );
@@ -49,6 +40,10 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 	if ( data.redirect ) {
 		window.location = "/";
 		return;
+	}
+	if (data.user){
+		$("#user-name").text( data.user.id );
+		//todo: @add change profile image (data.user.images (might happen that there is no profile image. we need a default one.)
 	}
 	var sessionApp;
 
@@ -107,7 +102,7 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 						qFallbackTitle: "Artist"
 					}
 				}], {} ).then( ( table ) => {
-					table.show( "QV02" );
+					table.show( "QV01" );
 				} );
 				sessionApp.visualization.create( "kpi", [{
 					"qDef": {
@@ -261,6 +256,6 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 		} )
 
 	} );
-} )
+} );
 
 
