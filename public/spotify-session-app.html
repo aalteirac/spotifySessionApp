@@ -75,6 +75,12 @@
 </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+	//Stops caching, so the animation reloads
+		$(document).ready(function () {
+			 $("#logo").attr("src", "images/logoreveal_cord.gif?" + Math.random());
+	 });
+</script>
 <script src="spotify-session-app.js"></script>
 <script>
 	var opts = {
