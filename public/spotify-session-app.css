@@ -101,6 +101,10 @@ body {
 	margin-top: 5px;
 }
 
+.data-wrap:nth-child(3) {
+	margin-bottom: 56px;
+}
+
 .title {
 	font-size: 25px;
 	font-weight: bold;
@@ -182,6 +186,24 @@ body {
 	padding: 5px 10px 0 10px;
 }
 
+.selections {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	height: 36px;
+	z-index: 5;
+	display: flex;
+	justify-content: center;
+	color: #d9d9d9;
+	align-items: center
+}
+
+.select-icon {
+	font-size: 21px;
+	margin: 0 23px;
+}
+
 .toaster {
 	position: absolute;
 	bottom: 0;
@@ -203,14 +225,11 @@ body {
 	display: inline;
 }
 
-/*.spinner {*/
-/*margin-top: 30%;*/
-/*margin-left: 50%*/
-/*}*/
+.spin {
+	position: absolute;
+	top: 50%;
+}
 
-/*.loaded.container {*/
-/*display: none;*/
-/*opacity: 0.1;*/
-/*}*/
+
 
 
