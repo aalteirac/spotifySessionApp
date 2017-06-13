@@ -36,7 +36,7 @@ function updateKpi ( value ) {
 }
 
 //Turn it to false if running all local with Qlik Sense Desktop
-runDesktop = true;
+runDesktop = false;
 $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 	if ( data.redirect ) {
 		window.location = "/";
@@ -66,7 +66,6 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 	var config;
 	if ( runDesktop ) {
 		config = {
-
 			host: 'localhost',
 			prefix: '/',
 			port: 4848,
