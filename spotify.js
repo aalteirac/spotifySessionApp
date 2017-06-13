@@ -88,8 +88,12 @@ function getBasic ( tk, code ) {
 					} else {
 						//If no artists we take popularity index by first public playlist
 						spotifyApi.getUserPlaylists().then( function ( data ) {
-							let firstPlaylist = data.body.items[0];
-							spotifyApi.getPlaylist( userData.id, firstPlaylist.id ).then( function ( data ) {
+							let firstPlaylist ={
+								id: data.body.items[0].id,
+								owner: data.body.items[0].owner.id
+							};
+
+							spotifyApi.getPlaylist( firstPlaylist.owner, firstPlaylist.id ).then( function ( data ) {
 								let artistsList = data.body.tracks.items.map( function ( el ) {
 									return el.track.artists[0].id;
 								} ).filter( function ( elem, index, self ) {
@@ -100,6 +104,8 @@ function getBasic ( tk, code ) {
 									halyard.addTable( artists, "Artist" );
 									resolve( {artists: artists, script: halyard.getScript(), user: userData} );
 								} )
+							},(err)=>{
+								console.log(err)
 							} );
 						} );
 					}
