@@ -9,13 +9,20 @@
   <body>
     <div class="container">
       <div id="login">
-        <img src="images/logoreveal.gif" class="logo">
+        <img src="images/logoreveal.gif" class="logo" id="logo">
         <button id="login-button">Log in with Spotify</button>
       </div>
     </div>
     <span class="by-wtk">Powered By Web Toolkit</span>
 
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+    <script>
+    	//Stops caching, so the animation reloads
+    		$(document).ready(function () {
+    			 $("#logo").attr("src", "images/logoreveal.gif?" + Math.random());
+    	 });
+    </script>
     <script>
       (function() {
         var stateKey = 'spotify_auth_state';

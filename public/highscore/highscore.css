@@ -1,0 +1,72 @@
+@font-face {
+	font-family: 'Quicksand';
+	src: url('../resources/fonts/Quicksand-Regular.otf');
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+}
+
+body {
+	background-image: url(../images/background-pattern.png);
+	background-size: auto 716px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.logo {
+	width: calc(100% - 20px);
+	max-width: 400px;
+	padding: 10px;
+}
+
+.high-score-list {
+	width: 100%;
+	max-width: 600px;
+}
+
+.score {
+	font-family: 'Quicksand';
+	color: #595959;
+	display: flex;
+	align-items: center;
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0 20px 10px 20px;
+	justify-content: space-between;
+}
+
+.pos {
+	font-size: 30px;
+	flex: 0 0 50px;
+}
+
+.profile-img {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+}
+
+.user-name {
+	margin: 0 10px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.user-score {
+	color: #75ba31;
+	text-shadow: 1px 1px 3px #1a280b;
+	font-size: 35px;
+}
+
+.flex {
+	display: flex;
+	align-items: center;
+	width: calc(100% - 45px);
+}
+
+

@@ -22,21 +22,23 @@
 <body role="document">
 <div class="header">
 	<div class="user-wrapper">
-		<img src="images/album.png" class="profile-img">
-		<span id="user-name">Ann-Louise Andersson</span>
+		<img src="images/profile.png" class="profile-img">
+		<span id="user-name"></span>
 	</div>
-	<span class="lui-icon lui-icon--log-out" aria-hidden="true"></span>
+	<div class="icon-wrap">
+		<img class="high-score" src="images/trophy.png">
+		<span class="lui-icon lui-icon--log-out" aria-hidden="true"></span>
+	</div>
 </div>
 <div class="content-wrapper">
 
-	<img src="images/qlik-spotify2.png" class="logo">
+	<img src="images/logoreveal_cord.gif" class="logo">
 
 	<div id="main-area">
 		<div class="data-wrap">
 			<span class="title">Your Mainstream Value</span>
 			<div class="flex-row">
 				<div class="flex-column">
-					<!--<img src="images/crocodile-icon.png" class="mainstream-icon">-->
 					<img class="mainstream-icon">
 					<span class="mainstream-label"></span>
 					<span class="mainstream-value"></span>
@@ -48,49 +50,37 @@
 			<button class="send-score">Share your score</button>
 		</div>
 		<div class="data-wrap">
-			<span class="title">Your Favorite Albums</span>
-			<div class="album-wrap">
-				<img src="images/album.png" class="album-img">
-				<img src="images/album.png" class="album-img">
-				<img src="images/album.png" class="album-img">
-				<img src="images/album.png" class="album-img">
-			</div>
+			<span class="title">Your Artists</span>
+			<div id="QV01" class="vis-wrap"></div>
 		</div>
 		<div class="data-wrap">
-			<span class="title">Your Favorite Songs</span>
-			<div class="song-wrap">
-				<span class="number" style="margin-left: 7px;">1.</span>
-				<span class="song">Friday Night - Vigiland</span>
-			</div>
-			<div class="song-wrap">
-				<span class="number">2.</span>
-				<span class="song">Friday Night - Vigiland</span>
-			</div>
-			<div class="song-wrap">
-				<span class="number">3.</span>
-				<span class="song">Friday Night - Vigiland</span>
-			</div>
-			<div class="song-wrap">
-				<span class="number">4.</span>
-				<span class="song">Friday Night - Vigiland</span>
-			</div>
-			<div class="song-wrap">
-				<span class="number">5.</span>
-				<span class="song">Friday Night - Vigiland</span>
-			</div>
+			<span class="title">Artists Popularity</span>
+			<div id="QV02" class="vis-wrap"></div>
 		</div>
 
-		<!--<div class="spin container">-->
-		<!--<div class="column-1">-->
-		<!--<div class="col-md-12" id="spin" style="width: 100%; height: 100%;"></div>-->
-		<!--</div>-->
-		<!--</div>-->
+		<div class="selections">
+			<span class="lui-icon lui-icon--selections-back select-icon" aria-hidden="true"></span>
+			<span class="lui-icon lui-icon--selections-forward select-icon" aria-hidden="true"></span>
+			<span class="lui-icon lui-icon--clear-selections select-icon" aria-hidden="true"></span>
+		</div>
+
+		<div class="spin container">
+			<div class="column-1">
+				<div class="col-md-12" id="spin" style="width: 100%; height: 100%;"></div>
+			</div>
+		</div>
 
 	</div>
 	<div class="toaster">Your score is sent to the high score</div>
 </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+	//Stops caching, so the animation reloads
+		$(document).ready(function () {
+			 $("#logo").attr("src", "images/logoreveal_cord.gif?" + Math.random());
+	 });
+</script>
 <script src="spotify-session-app.js"></script>
 <script>
 	var opts = {
@@ -118,4 +108,3 @@
 	var spinner = new Spinner( opts ).spin( target );
 </script>
 </html>
-

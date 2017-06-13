@@ -16,7 +16,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	background-image: url("images/background-pattern.png");
-	background-size: auto 135%;
+	background-size: auto 716px;
 	overflow-y: auto;
 	overflow-x: hidden;
 	height: calc(100% - 46px);
@@ -39,6 +39,15 @@ body {
 .user-wrapper {
 	display: flex;
 	align-items: center;
+	width: calc(100% - 53px);
+}
+
+#user-name {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	margin-right: 15px;
 }
 
 .profile-img {
@@ -50,12 +59,17 @@ body {
 
 .lui-icon--log-out {
 	font-size: 18px;
+	margin-left: 17px;
 }
 
 .logo {
 	width: calc(100% - 20px);
 	margin: 10px;
 	max-width: 400px;
+}
+
+.icon-wrap {
+	display: flex;
 }
 
 #main-area {
@@ -85,6 +99,10 @@ body {
 
 .data-wrap:first-child {
 	margin-top: 5px;
+}
+
+.data-wrap:nth-child(3) {
+	margin-bottom: 56px;
 }
 
 .title {
@@ -162,52 +180,34 @@ body {
 	background: #e6e6e6;
 }
 
-.album-wrap {
-	margin: 20px 5px 0 15px;
-	display: flex;
-	flex-wrap: wrap;
+.vis-wrap {
+	width: calc(100% - 20px);
+	height: 350px;
+	padding: 5px 10px 0 10px;
 }
 
-.album-img {
-	width: 40vw;
-	height: 40vw;
-	border-radius: 5px;
-	margin: 0 10px 10px 0;
-	max-height: 140px;
-	max-width: 140px;
-}
-
-.song-wrap {
-	align-self: flex-start;
-	padding-left: 15px;
-	padding-right: 15px;
-	margin-bottom: 10px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+.selections {
+	position: absolute;
+	bottom: 0;
 	width: 100%;
-	box-sizing: border-box;
+	background: rgba(0, 0, 0, 0.6);
+	height: 36px;
+	z-index: 5;
+	display: flex;
+	justify-content: center;
+	color: #d9d9d9;
+	align-items: center
 }
 
-.song-wrap:nth-child(2) {
-	margin-top: 20px;
-}
-
-.number {
-	color: #75ba31;
-	text-shadow: 1px 1px 1px #41641b;
-	font-size: 35px;
-	font-weight: bold;
-	margin-right: 15px;
-}
-
-.song {
-	font-size: 20px;
+.select-icon {
+	font-size: 21px;
+	margin: 0 23px;
 }
 
 .toaster {
 	position: absolute;
-	bottom: -40px;
+	bottom: 0;
+	display: none;
 	width: calc(100% - 10px);
 	height: 35px;
 	color: white;
@@ -218,21 +218,18 @@ body {
 	margin: 5px 0;
 	border-radius: 5px;
 	font-size: 16px;
-	transition: bottom 0.5s;
+	max-width: 360px;
 }
 
 .toaster.show {
-	bottom: 0;
+	display: inline;
 }
 
-/*.spinner {*/
-/*margin-top: 30%;*/
-/*margin-left: 50%*/
-/*}*/
+.spin {
+	position: absolute;
+	top: 50%;
+}
 
-/*.loaded.container {*/
-/*display: none;*/
-/*opacity: 0.1;*/
-/*}*/
+
 
 
