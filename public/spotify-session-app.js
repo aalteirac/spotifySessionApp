@@ -5,7 +5,7 @@ function getUrlVars () {
 		hash = hashes[i].split( '=' );
 		vars.push( hash[0] );
 		vars[hash[0]] = hash[1];
-    }
+	}
 	return vars;
 }
 
@@ -38,20 +38,20 @@ function updateKpi ( value ) {
 runDesktop = true;
 $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 	if ( data.redirect ) {
-        window.location = "/";
-        return;
-    }
-	if (data.user){
-		$("#user-name").text( data.user.id );
+		window.location = "/";
+		return;
+	}
+	if ( data.user ) {
+		$( "#user-name" ).text( data.user.id );
 		//todo: @add change profile image (data.user.images (might happen that there is no profile image. we need a default one.)
 	}
-    var sessionApp;
+	var sessionApp;
 
 	$( ".send-score" ).click( function () {
 		$( ".toaster" ).addClass( 'show' );
-		$('.toaster').fadeIn(1000);
+		$( '.toaster' ).fadeIn( 1000 );
 		setTimeout( function () {
-			$('.toaster').fadeOut(1000);
+			$( '.toaster' ).fadeOut( 1000 );
 			setTimeout( function () { $( ".toaster" ).removeClass( 'show' ); }, 1000 );
 		}, 4000 );
 	} );
@@ -60,63 +60,52 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 		// open highscore page
 	} );
 
-    var config;
+	var config;
 	if ( runDesktop ) {
-        config = {
+		config = {
 
-            host: 'localhost',
-            prefix: '/',
-            port: 4848,
-            isSecure: false
-        }
+			host: 'localhost',
+			prefix: '/',
+			port: 4848,
+			isSecure: false
+		}
 	} else {
-        config = {
-            //Change to Qlik Server IP or hostname
-            host: '10.76.224.67',
-            prefix: '/ano/',
-            port: 80,
-            isSecure: false
-        }
-    }
+		config = {
+			//Change to Qlik Server IP or hostname
+			host: '10.76.224.67',
+			prefix: '/ano/',
+			port: 80,
+			isSecure: false
+		}
+	}
 
 	require.config( {
-        baseUrl: (config.isSecure ? "https://" : "http://" ) + config.host + (config.port ? ":" + config.port : "" ) + config.prefix + "resources"
-    });
+		baseUrl: (config.isSecure ? "https://" : "http://" ) + config.host + (config.port ? ":" + config.port : "" ) + config.prefix + "resources"
+	} );
 
-     
-        
+	$( ".dis" ).click( () => {
+		var allcookies = document.cookie;
 
-     $(".dis").click(()=> {
+		localStorage.clear();
+		localStorage.removeItem( "connect.sid" );
 
-            var allcookies = document.cookie;
-    
-            
-             localStorage.clear();
-             localStorage.removeItem("connect.sid");
-
-             document.cookie.split(";").forEach(function(c){
-                if( c.name == 'connect.sid')
-                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-             });
+		document.cookie.split( ";" ).forEach( function ( c ) {
+			if ( c.name == 'connect.sid' ) {
+				document.cookie = c.replace( /^ +/, "" ).replace( /=.*/, "=;expires=" + new Date().toUTCString() + ";path=/" );
+			}
+		} );
+	} );
 
 	require( ["js/qlik"], function ( qlik ) {
 
-            
-
-             window.location = "/";
-             return;
-        })
-
-    require(["js/qlik"], function (qlik) {
-
-        function post(dt) {
-            var url = 'main';
+		function post ( dt ) {
+			var url = 'main';
 			$.post( url, dt, function ( data ) {
 				if ( !data.app ) {
 					alert( "Spotify API has a rate limit, error could related (or not :-) ) : " + JSON.stringify( data ) );
-                    return;
-                }
-                var allOb = [];
+					return;
+				}
+				var allOb = [];
 
 				sessionApp = qlik.sessionAppFromApp( "engineData", config );
 				sessionApp.getAppLayout( function ( layout ) {
@@ -127,17 +116,17 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 
 				//Update KPI
 				sessionApp.visualization.create( "table", [{
-                    "qDef": {
-                            qFieldDefs: ["artistName"],
-                            qFallbackTitle: "Artist"
-                        }
+					"qDef": {
+						qFieldDefs: ["artistName"],
+						qFallbackTitle: "Artist"
+					}
 				}], {} ).then( ( table ) => {
 					table.show( "QV01" );
 				} );
 				sessionApp.visualization.create( "kpi", [{
 					"qDef": {
 						qDef: "=Avg(popularity)"
-                            }
+					}
 				}], {} ).then( function ( reply ) {
 					updateKpi( reply.model.layout.qHyperCube.qDataPages[0].qMatrix[0][0].qNum );
 				} );
@@ -255,36 +244,38 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 			} ).fail( function ( e ) {
 				alert( JSON.stringify( e ) );
 			} )
-        }
+		}
 
-        //var global = qlik.getGlobal(config);
-        //global.getAuthenticatedUser(function(reply){
-        //	global.session.close()
-        //var user=reply.qReturn.split(';')[1].split('=')[1];
+		//var global = qlik.getGlobal(config);
+		//global.getAuthenticatedUser(function(reply){
+		//	global.session.close()
+		//var user=reply.qReturn.split(';')[1].split('=')[1];
 		post( {code: getUrlVars().code} );
-        //});
+		//});
 		$( "[data-qcmd]" ).on( 'click', function () {
 			var $element = $( this );
 			switch ( $element.data( 'qcmd' ) ) {
-                //app level commands
-                case 'clearAll':
-                    sessionApp.clearAll();
-                    break;
-                case 'back':
-                    sessionApp.back();
-                    break;
-                case 'forward':
-                    sessionApp.forward();
-                    break;
-            }
-        });
-        $(".dis").click(()=> {
-            
-            var app = qlik.currApp();
-            if (app) app.global.session.close();
-             window.location = "/";
-             return;
-        })
+				//app level commands
+				case 'clearAll':
+					sessionApp.clearAll();
+					break;
+				case 'back':
+					sessionApp.back();
+					break;
+				case 'forward':
+					sessionApp.forward();
+					break;
+			}
+		} );
+		$( ".dis" ).click( () => {
+
+			var app = qlik.currApp();
+			if ( app ) {
+				app.global.session.close();
+			}
+			window.location = "/";
+			return;
+		} )
 
 	} );
 } );
