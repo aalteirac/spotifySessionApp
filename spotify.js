@@ -7,8 +7,9 @@ const conf = require( './config' );
 var credentials = {
 	clientId: conf.clientId,
 	clientSecret: conf.clientSecret,
-	redirectUri: 'http://localhost:3010/spotify-session-app.html'
+	redirectUri: (conf.runDesktop) ? "http://localhost:3010/spotify-session-app.html" : "http://10.76.224.67:3010/spotify-session-app.html"
 };
+
 let spotifyApi;
 let userData;
 
@@ -159,32 +160,32 @@ function getArtistsData ( api, list ) {
 	} )
 }
 
-function getAllArtistAlbums ( api, list ) {
-	return new Promise( function ( resolve, reject ) {
-		var defList = list.map( function ( el ) {
-			return api.getArtistAlbums( el, {album_type: "album", limit: 50} )
-		} );
-		Promise.all( defList ).then( function ( data ) {
-			var albums = [];
-			data.forEach( function ( artist ) {
-				albums = albums.concat( artist.body.items );
-			} );
-			albums = albums.map( function ( el ) {
-				return {
-					albumId: el.id,
-					albumName: el.name,
-					artistId: el.artists[0].id,
-					artistName: el.artists[0].name,
-					url: el.external_urls.spotify,
-					imageUrl: el.images[0] ? el.images[0].url : ""
-				}
-			} );
-			resolve( albums );
-		}, ( e ) => {
-			reject( e );
-		} );
-	} );
-}
+// function getAllArtistAlbums ( api, list ) {
+// 	return new Promise( function ( resolve, reject ) {
+// 		var defList = list.map( function ( el ) {
+// 			return api.getArtistAlbums( el, {album_type: "album", limit: 50} )
+// 		} );
+// 		Promise.all( defList ).then( function ( data ) {
+// 			var albums = [];
+// 			data.forEach( function ( artist ) {
+// 				albums = albums.concat( artist.body.items );
+// 			} );
+// 			albums = albums.map( function ( el ) {
+// 				return {
+// 					albumId: el.id,
+// 					albumName: el.name,
+// 					artistId: el.artists[0].id,
+// 					artistName: el.artists[0].name,
+// 					url: el.external_urls.spotify,
+// 					imageUrl: el.images[0] ? el.images[0].url : ""
+// 				}
+// 			} );
+// 			resolve( albums );
+// 		}, ( e ) => {
+// 			reject( e );
+// 		} );
+// 	} );
+// }
 
 function search ( q ) {
 	return new Promise( function ( resolve, reject ) {
