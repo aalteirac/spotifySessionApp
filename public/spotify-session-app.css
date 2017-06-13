@@ -176,47 +176,10 @@ body {
 	background: #e6e6e6;
 }
 
-.album-wrap {
-	margin: 20px 5px 0 15px;
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.album-img {
-	width: 40vw;
-	height: 40vw;
-	border-radius: 5px;
-	margin: 0 10px 10px 0;
-	max-height: 140px;
-	max-width: 140px;
-}
-
-.song-wrap {
-	align-self: flex-start;
-	padding-left: 15px;
-	padding-right: 15px;
-	margin-bottom: 10px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	width: 100%;
-	box-sizing: border-box;
-}
-
-.song-wrap:nth-child(2) {
-	margin-top: 20px;
-}
-
-.number {
-	color: #75ba31;
-	text-shadow: 1px 1px 1px #41641b;
-	font-size: 35px;
-	font-weight: bold;
-	margin-right: 15px;
-}
-
-.song {
-	font-size: 20px;
+.vis-wrap {
+	width: calc(100% - 20px);
+	height: 350px;
+	padding: 5px 10px 0 10px;
 }
 
 .toaster {
