@@ -10,6 +10,7 @@ function getUrlVars () {
 }
 
 function updateKpi ( value ) {
+	value = Math.round( value );
 	$( ".mainstream-value" ).text( value );
 	$( ".bar" ).css( "height", "calc(" + value + "% - 2px)" );
 
@@ -42,8 +43,10 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 		return;
 	}
 	if ( data.user ) {
-		$( "#user-name" ).text( data.user.id );
-		//todo: @add change profile image (data.user.images (might happen that there is no profile image. we need a default one.)
+		$( "#user-name" ).text( data.user.display_name );
+		if ( data.user.images[0].url ) {
+			$( ".profile-img" ).attr( "src", data.user.images[0].url );
+		}
 	}
 	var sessionApp;
 
@@ -120,7 +123,7 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 						qFieldDefs: ["artistName"],
 						qFallbackTitle: "Artist"
 					}
-				}], {} ).then( ( table ) => {
+				}], {} ).then( function( table ) {
 					table.show( "QV01" );
 				} );
 				sessionApp.visualization.create( "kpi", [{
@@ -130,6 +133,26 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 				}], {} ).then( function ( reply ) {
 					updateKpi( reply.model.layout.qHyperCube.qDataPages[0].qMatrix[0][0].qNum );
 				} );
+
+				sessionApp.visualization.create('linechart',
+				    ["artistName", {"qDef": {qDef: "=Avg(popularity)", qFallbackTitle: 'Avg Popularity'}}],
+				    {
+				        "dataPoint": {
+				            "show": true,
+				            "showLabels": true
+				        },
+				        "color": {
+				            "auto": false,
+				            "paletteColor": {
+				                "index": 2
+				            }
+				        }
+				    }
+				).then( function ( table ) {
+					table.show( "QV02" );
+				} );
+
+				sessionApp.clearAll();
 
 				// allOb.push(sessionApp.visualization.create("table", [{
 				//     "qDef": {
