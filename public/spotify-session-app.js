@@ -43,8 +43,8 @@ $.post( 'main', {auth: true, code: getUrlVars().code}, function ( data ) {
 		return;
 	}
 	if ( data.user ) {
-		$( "#user-name" ).text( data.user.display_name );
-		if ( data.user.images[0].url ) {
+		$( "#user-name" ).text( data.user.display_name || data.user.id );
+		if ( data.user.images.length !== 0 && data.user.images[0].url ) {
 			$( ".profile-img" ).attr( "src", data.user.images[0].url );
 		}
 	}
