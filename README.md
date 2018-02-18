@@ -21,6 +21,8 @@ Setup a new application on that site, only required thing is the REDIRECT URIs w
 
 Nodejs and npm install needed
 
+When setup is finished, navigate to "localhost:3002/" -> this will redirect you to spotify login
+
 Thanks to José.F and Ann-Louise.A for original idea and implementation ! WTK rocks !
 
 ![alt text](https://raw.githubusercontent.com/aalteirac/spotifySessionApp/27201dacd1ce35f144ba318e17303729d1921036/thumb.png "screen-shot")
